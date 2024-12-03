@@ -1,0 +1,123 @@
+var data = {
+    "data": [
+        {
+            "title": "示例分类",
+            "sites": [
+                {
+                    "title": "导航2",
+                    "href": "?d=导航2",
+                    "icon": "",
+                    "remark": "另一个导航页",
+                    "description": "另打开一个页面，复制网址，后面加上\"?d=导航页名\"，页面添加数据后保存"
+                },
+                {
+                    "title": "账号记录",
+                    "href": "?d=账号记录",
+                    "icon": "",
+                    "remark": "还可以记录账号密码，示例密码：123456",
+                    "description": "<span style=\"color:red\">账密当然要加密保存啦</span><br>示例密码：123456"
+                },
+                {
+                    "title": "WebStack.cc",
+                    "href": "?d=webstack/nav",
+                    "icon": "datas/webstack/favicon.png",
+                    "remark": "?d=webstack/nav",
+                    "description": "哈哈，用 WebStack 数据看一下效果的"
+                }
+            ]
+        },
+        {
+            "title": "分类1",
+            "children": [
+                {
+                    "title": "分类101",
+                    "sites": [
+                        {
+                            "title": "GitHub",
+                            "href": "https://github.com/",
+                            "icon": "https://github.githubassets.com/favicons/favicon.png",
+                            "remark": "GitHub 开源社区",
+                            "description": ""
+                        },
+                        {
+                            "title": "GitCode",
+                            "href": "https://gitcode.com/",
+                            "icon": "",
+                            "remark": "中文开发者代码社区",
+                            "description": ""
+                        },
+                        {
+                            "title": "码云",
+                            "href": "https://gitee.com/",
+                            "icon": "https://gitee.com/favicon.ico",
+                            "remark": "gitee",
+                            "description": "基于 Git 的代码托管和研发协作平台"
+                        },
+                        {
+                            "title": "GitLab",
+                            "href": "https://gitlab.com/",
+                            "icon": "https://gitlab.com/assets/favicon-72a2cad5025aa931d6ea56c3201d1f18e68a8cd39788c7c80d5b2b82aa5143ef.png",
+                            "remark": "CI/CD",
+                            "description": ""
+                        }
+                    ]
+                },
+                {
+                    "title": "分类103",
+                    "sites": [
+                        {
+                            "title": "",
+                            "href": "https://weread.qq.com/web/bookDetail/33332bf05cbba0333b1efb4",
+                            "icon": "https://wfqqreader-1252317822.image.myqcloud.com/cover/464/834464/t6_834464.jpg",
+                            "description": "标题和备注都不填，图片会占满卡片宽度<br>活着 - 余华"
+                        },
+                        {
+                            "title": "",
+                            "href": "https://www.amazon.com/little-Prince-Antoine-Saint-Exup%C3%A9ry/dp/0544656490/ref=sr_1_3",
+                            "icon": "https://m.media-amazon.com/images/I/61qzAkjN0dL._SY466_.jpg",
+                            "description": "The Little Prince"
+                        },
+                        {
+                            "title": "",
+                            "href": "https://read.douban.com/ebook/30712317/",
+                            "icon": "https://pic.arkread.com/cover/ebook/f/30712317.1653693675.jpg!cover_default.jpg",
+                            "description": "杀死一只知更鸟"
+                        }
+                    ]
+                },
+                {
+                    "title": "分类104"
+                }
+            ],
+            "sites": [
+                {
+                    "title": "图片示例",
+                    "href": "",
+                    "icon": "datas/sample/images/dashang_wx.jpg",
+                    "remark": "弹出支持 html",
+                    "description": "扫码打赏我<br>微信：<br><img width=\"150\" src=\"datas/sample/images/dashang_wx.jpg\"><br>支付宝：<br><img width=\"150\" src=\"datas/sample/images/dashang_zfb.jpg\">"
+                },
+                {
+                    "title": "联系我",
+                    "href": "",
+                    "icon": "datas/sample/images/tintour.jpg",
+                    "remark": "微信公众号：tintour",
+                    "description": "个人订阅号：<br><img width=\"150\" src=\"datas/sample/images/tintour.jpg\">"
+                }
+            ]
+        },
+        {
+            "title": "分类4"
+        },
+        {
+            "title": "分类5"
+        }
+    ],
+    "settings": {
+        "showEmptyCategory": true,
+        "crypto": false,
+        "cardWidth": 0,
+        "full": false,
+        "rememberPass": false
+    }
+}

@@ -4,11 +4,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
-    <title>nav</title>
+    <title>Navi - 奈未导航</title>
+	<link rel="icon" href="assets/images/favicon.png" />
+    <link rel="stylesheet" href="assets/css/iconfont/iconfont.css" type="text/css" />
+    <link rel="stylesheet" href="assets/css/nav.css">
 </head>
 
 <body>
-    Nothing
+    <div id="app" v-cloak>
+        <div class="marsk" v-show="controlData.showMenu" style="z-index:2" @click.self="controlData.showMenu = false">
+            <aside>
+                <ul>
+                    <li v-for="(item, i) in items" :key="item.key">
+                        <a :href="'#' + item.key">
+                            <i v-if="controlData.editModel" class="iconfont icon-delete" @click="deleteMenu(i)"></i>
+                            <i v-if="controlData.editModel" class="iconfont icon-edit" @click="editSite(false, true, true, i)"></i>
+                            <i v-if="!controlData.editModel" class="iconfont icon-tag no-scale"></i>
+                            <span class="title nowrap-ellipsis" @click="expand($event)">{{item.title}}</span>
+                            <i v-if="item.children && item.children.length > 0" class="iconfont icon-right no-scale"></i>
+                        </a>
+                        <ul v-if="item.children && item.children.length > 0">
+                            <li v-for="(child, j) in item.children" :key="child.key">
+                                <a :href="'#' + child.key">
+                                    <i v-if="controlData.editModel" class="iconfont icon-delete" @click="deleteMenu(i,j)"></i>
+                                    <i v-if="controlData.editModel" class="iconfont icon-edit" @click="editSite(false, false, true, i,j)"></i>
+                                    <span class="title nowrap-ellipsis">{{child.title}}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul>
+                    <li><a href="pages/instructions.html" target="_blank">
+                        <i class="iconfont icon-tag no-scale"></i>使用说明
+                    </a></li>
+                </ul>
+            </aside>
+        </div>
+
+        <main>
+            <header>
+                <a @click="controlData.showMenu = !controlData.showMenu"><i class="iconfont icon-category"></i></a>
+                <a href="https://github.com/tinjq/nav" target="_blank"><i class="iconfont icon-github"></i></a>
+            </header>
+
+            <section>
+                <div :style="settings.full ? 'margin: 0' : ''">
+                    <div v-for="(item, i) in items" :key="item.key">
+                        <h4 v-if="settings.showEmptyCategory || (item.sites && item.sites.length > 0)" :id="item.key">
+                            <i class="iconfont icon-tag no-scale"></i> {{item.title}}
+                            <i v-if="controlData.editModel" class="iconfont icon-add" @click="editSite(true, true, false, i)"></i>
+                        </h4>
+                        <div v-if="item.sites && item.sites.length > 0" class="site-cards">
+                            <div v-for="(site, j) in item.sites" :key="site.key" 
+                                :style="settings.cardWidth ? `width:${settings.cardWidth}%` : ''">
+                                <div class="site-card" @mouseenter="showTip($event)" @mouseleave="hideTip" @click="clickCard(site)"
+                                    :tip-content="tooltipContent(site)" tip-placement="bottom">
+                                    <img v-if="site.icon && site.icon.length > 0" :src="site.icon" loading="lazy">
+                                    <div v-if="(site.title && site.title.length > 0) || (site.remark && site.title.remark > 0)">
+                                        <p class="nowrap-ellipsis">{{site.title}}</p>
+                                        <p class="nowrap-ellipsis">{{site.remark}}</p>
+                                    </div>
+                                </div>
+                                <div v-if="controlData.editModel" class="edit-icons">
+                                    <i class="iconfont icon-edit" @click="editSite(true, false, true, i, j)"></i>
+                                    <i class="iconfont icon-delete" @click="editDelete(i, j)"></i>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <template v-for="(child, j) in item.children" :key="child.key">
+                            <div v-if="settings.showEmptyCategory || (child.sites && child.sites.length > 0)">
+                                <h4 :id="child.key">
+                                    <i class="iconfont icon-tag no-scale"></i> {{child.title}}
+                                    <i v-if="controlData.editModel" class="iconfont icon-add" @click="editSite(true, true, false, i, j)"></i>
+                                </h4>
+                                <div v-if="child.sites && child.sites.length > 0" class="site-cards">
+                                    <div v-for="(site, k) in child.sites" :key="site.key" 
+                                        :style="settings.cardWidth ? `width:${settings.cardWidth}%` : ''">
+                                        <div class="site-card" @mouseenter="showTip($event)" @click="clickCard(site)"
+                                            @mouseleave="hideTip" :tip-content="tooltipContent(site)" tip-placement="bottom">
+                                            <img v-if="site.icon && site.icon.length > 0" :src="site.icon" loading="lazy">
+                                            <div v-if="(site.title && site.title.length > 0) || (site.remark && site.title.remark > 0)">
+                                                <p class="nowrap-ellipsis">{{site.title}}</p>
+                                                <p class="nowrap-ellipsis">{{site.remark}}</p>
+                                            </div>
+                                        </div>
+                                        <div v-if="controlData.editModel" class="edit-icons">
+                                            <i class="iconfont icon-edit" @click="editSite(true, false, true, i, j, k)"></i>
+                                            <i class="iconfont icon-delete" @click="editDelete(i, j, k)"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+    
+                    </div>
+                </div>
+            </section>
+
+            <footer class="footer-tools">
+                <a v-show="controlData.editModel" class="rounded-circle" @click="saveData" @mouseenter="showTip($event)" 
+                    @mouseleave="hideTip" tip-content="修改后要保存，否则刷新页面就丢了" tip-placement="left">
+                    <i class="iconfont icon-save"></i>
+                </a>
+                <a class="rounded-circle" @click="controlData.editModel = !controlData.editModel"  tip-placement="left"
+                    @mouseenter="showTip($event)" @mouseleave="hideTip" tip-content="切换修改模式">
+                    <i class="iconfont icon-edit"></i>
+                </a>
+                <a href="javascript:toTop();" class="rounded-circle"  tip-placement="left"
+                    @mouseenter="showTip($event)" @mouseleave="hideTip" tip-content="回到顶部">
+                    <i class="iconfont icon-to-up"></i>
+                </a>
+                <a class="rounded-circle" @click="showSettingsForm"  tip-placement="left"
+                    @mouseenter="showTip($event)" @mouseleave="hideTip" tip-content="设置">
+                    <i class="iconfont icon-settings"></i>
+                </a>
+            </footer>
+
+            <div v-show="isShowTip" id="tooltip" role="tooltip" 
+                @mouseenter="enterTooltip" @mouseleave="hideTip">
+                <span v-html="tipContent"></span>
+                <div id="arrow"></div>
+            </div>
+
+            <div class="marsk" v-show="controlData.showSettings" @click="controlData.showSettings = false">
+                <div class="popup settingsPopup" onclick="event.stopPropagation()">
+                    <div>
+                        <span>是否加密：</span>
+                        <div>
+                            <input type="radio" v-model="controlData.crypto" value="false">不加密
+                            <input type="radio" v-model="controlData.crypto" value="true">加密
+                        </div>
+                    </div>
+                    <div v-show="controlData.crypto === true || controlData.crypto === 'true'">
+                        <span>加密密码：</span>
+                        <input type="password" v-model="controlData.password"/>
+                    </div>
+                    <div v-show="controlData.crypto === true || controlData.crypto === 'true'">
+                        <span>记住密码：</span>
+                        <div>
+                            <input type="radio" v-model="controlData.rememberPass" value="true">是
+                            <input type="radio" v-model="controlData.rememberPass" value="false">否
+                        </div>
+                    </div>
+                    <div>
+                        <span>显示空分类：</span>
+                        <div>
+                            <input type="radio" v-model="controlData.showEmptyCategory" value="false">不显示
+                            <input type="radio" v-model="controlData.showEmptyCategory" value="true">显示
+                        </div>
+                    </div>
+                    <div>
+                        <span>卡片铺满：</span>
+                        <div>
+                            <input type="radio" v-model="controlData.full" value="false">不铺满
+                            <input type="radio" v-model="controlData.full" value="true">铺满
+                        </div>
+                    </div>
+                    <div>
+                        <span>卡片宽度(%)：</span>
+                        <input type="text" v-model="controlData.cardWidth" placeholder="33" />
+                    </div>
+                    <div class="btns">
+                        <button class="btn-yes" @click="confirmSettings">确定</button>
+                        <button class="btn-cancel" @click="controlData.showSettings = false">取消</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="marsk" style="z-index:5" v-show="controlData.showMask" @click="controlData.showMask = false">
+                <div class="popup editForm" onclick="event.stopPropagation()">
+                    <div>标题：<input type="text" v-model="editData.title"></div>
+                    <div v-if="editFlag.info">链接：<input type="text" v-model="editData.href"></div>
+                    <div v-if="editFlag.info">图片：<input type="text" v-model="editData.icon" placeholder="图片地址"></div>
+                    <div v-if="editFlag.info">备注：<input type="text" v-model="editData.remark"></div>
+                    <div v-if="editFlag.info">描述：<input type="text" v-model="editData.description"></div>
+                    <div class="btns">
+                        <button v-if="editFlag.btns" @click="editUpdate">修改</button>
+                        <button v-if="editFlag.btns" @click="insertBefore">前添加</button>
+                        <button v-if="editFlag.btns" @click="insertAfter">后添加</button>
+                        <button v-if="editFlag.child" @click="appendChild">添加子项</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="marsk confirm-pass" style="display: none;">
+        <div class="popup " onclick="event.stopPropagation()">
+            <div>
+                密码：<input type="password" placeholder="请输入密码" />
+            </div>
+            <div class="btns">
+                <button class="btn-yes">确定</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/floating-ui-core-1.6.5.js"></script>
+    <script src="assets/js/floating-ui-dom-1.6.8.js"></script>
+    <script src="assets/js/vue.global.prod.js"></script>
+    <script src="assets/js/crypto-js.min.js"></script>
+    <script src="assets/js/nav-common.js"></script>
+    <script src="assets/js/nav.js"></script>
 </body>
 
 </html>
