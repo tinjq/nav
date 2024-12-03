@@ -15,7 +15,7 @@ var data = {
                     "href": "?d=账号记录",
                     "icon": "",
                     "remark": "还可以记录账号密码，示例密码：123456",
-                    "description": "<span style=\"color:red\">账密当然要加密保存啦</span><br>示例密码：123456"
+                    "description": "<span style=\"color:red\">账密当然要加密保存啦</span><br>示例密码：123456<br><span style=\"color:red\">提醒：账密信息即使加密了也不要大张旗鼓地公示在网络</span>"
                 },
                 {
                     "title": "WebStack.cc",
