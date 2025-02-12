@@ -23,7 +23,7 @@ ul {
 
 a, a:visited, a:link, a:hover {
     text-decoration: none;
-	color:#282a2d !important;
+	color:#282a2d;
 }
 
 [v-cloak] {
